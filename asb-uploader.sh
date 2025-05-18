@@ -16,7 +16,7 @@ IMAGE_TAG_OTHERS="test"
 WORK_DETAILS='{
   "apiWork": {
     "workId": "",
-    "mainTitle": "'"${IMAGE_TITLE}"'",,
+    "mainTitle": "'"${IMAGE_TITLE}"'",
     "subTitle": "",
     "description": "",
     "titleImgUrl": "",
@@ -121,14 +121,15 @@ function post_work() {
   
   # ここでレスポンスを解析して成功/失敗を判定できます
   # 例: 成功時にworkIdが返される場合
-  local work_id=$(echo "${response}" | jq -r '.workId')
+  local work_id=$(echo "${response}" | jq -r '.apiWork.workId')
   
   if [ -n "${work_id}" ] && [ "${work_id}" != "null" ]; then
     echo "作品の投稿に成功しました!"
     echo "作品ID: ${work_id}"
+    echo "タイトル画像URL: $(echo "${response}" | jq -r '.apiWork.titleImgUrl')"
   else
     echo "作品の投稿に失敗しました"
-    echo "レスポンス: ${response}"
+    echo "エラーレスポンス: ${response}"
     exit 1
   fi
 }
