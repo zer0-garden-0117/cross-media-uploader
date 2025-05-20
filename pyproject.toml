@@ -10,7 +10,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "tkinterdnd2 (>=0.4.3,<0.5.0)",
-    "pysimplegui (>=5.0.8.3,<6.0.0.0)"
+    "pysimplegui (>=5.0.8.3,<6.0.0.0)",
+    "pyqt6 (>=6.9.0,<7.0.0)"
 ]
 
 
