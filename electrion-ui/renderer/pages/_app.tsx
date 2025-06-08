@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 
 import '../styles/globals.css'
 import '@mantine/core/styles.css';
+import '@mantine/dropzone/styles.css';
 import { createTheme, MantineProvider } from '@mantine/core';
 
 const theme = createTheme({
