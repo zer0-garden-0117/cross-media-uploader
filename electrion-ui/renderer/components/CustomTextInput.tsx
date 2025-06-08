@@ -1,8 +1,15 @@
 import { TextInput } from '@mantine/core';
 
-export function CustomTextInput() {
+interface CustomTextInputProps {
+  value: string | null;
+  onChange: (value: string | null) => void;
+}
+
+export function CustomTextInput({ value, onChange }: CustomTextInputProps) {
   return (
     <TextInput
+      value={value}
+      onChange={(event) => onChange(event.currentTarget.value)}
       description="Input description"
       placeholder="Comment"
     />

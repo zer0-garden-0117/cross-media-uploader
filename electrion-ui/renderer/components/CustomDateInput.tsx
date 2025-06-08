@@ -1,10 +1,16 @@
 import { useState } from 'react';
 import { DateTimePicker } from '@mantine/dates';
 
-export function CustomDateInput() {
-  const [value, setValue] = useState<string | null>(null);
+interface CustomDateInputProps {
+  value: string | null;
+  onChange: (value: string | null) => void;
+}
+
+export function CustomDateInput({ value, onChange }: CustomDateInputProps) {
   return (
     <DateTimePicker
+      value={value}
+      onChange={onChange}
       placeholder="Pick date and time"
       valueFormat="YYYY-MM-DD hh:mm A"
       timePickerProps={{

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import {
@@ -11,6 +11,9 @@ import { CustomTextInput } from '../components/CustomTextInput';
 import { CustomTagsInput } from '../components/CustomTagsInput';
 
 export default function FormPage() {
+  const [dateValue, setDateValue] = useState<string>("");
+  const [commentValue, setCommentValue] = useState<string>("");
+  const [tagsValue, setTagsValue] = useState<string[]>([]);
 
   return (
     <React.Fragment>
@@ -24,15 +27,15 @@ export default function FormPage() {
 
         {/* 投稿日時 */}
         <Title>投稿日時</Title>
-        <CustomDateInput />
+        <CustomDateInput value={dateValue} onChange={setDateValue} />
 
         {/* コメント */}
         <Title>コメント</Title>
-        <CustomTextInput />
+        <CustomTextInput value={commentValue} onChange={setCommentValue} />
 
         {/* タグ */}
         <Title>タグ</Title>
-        <CustomTagsInput />
+        <CustomTagsInput value={tagsValue} onChange={setTagsValue} />
 
       </Paper>
 
