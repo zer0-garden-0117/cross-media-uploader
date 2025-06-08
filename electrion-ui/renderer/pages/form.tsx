@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import {
+  Button,
+  Flex,
   Paper,
+  Space,
   Title,
 } from '@mantine/core';
 import { CustomDropzone } from '../components/CustomDropzone';
@@ -43,6 +46,17 @@ export default function FormPage() {
         {/* タグ */}
         <Title>タグ</Title>
         <CustomTagsInput value={tagsValue} onChange={setTagsValue} />
+
+        <Space h="xl" />
+
+        {/* 予約投稿ボタン */}
+        <Flex justify="right" align="center">
+        <Button
+          size='xs'
+        >
+          予約投稿
+        </Button>
+        </Flex>
 
       </Paper>
 
