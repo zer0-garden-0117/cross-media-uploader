@@ -14,6 +14,13 @@ export default function FormPage() {
   const [dateValue, setDateValue] = useState<string>("");
   const [commentValue, setCommentValue] = useState<string>("");
   const [tagsValue, setTagsValue] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+  const handleDrop = async (newFiles: File[]) => {
+    setFiles(prev => [...prev, ...newFiles]);
+  };
+  const handleRemove = async (index: number) => {    
+    setFiles(prev => prev.filter((_, i) => i !== index));
+  };
 
   return (
     <React.Fragment>
@@ -23,7 +30,7 @@ export default function FormPage() {
       <Paper radius="md" p="lg" withBorder>
         {/* 画像のD&D */}
         <Title>画像</Title>
-        <CustomDropzone />
+        <CustomDropzone files={files} onDrop={handleDrop} onRemove={handleRemove}/>
 
         {/* 投稿日時 */}
         <Title>投稿日時</Title>

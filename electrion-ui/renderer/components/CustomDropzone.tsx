@@ -1,29 +1,23 @@
-import { useState } from 'react';
 import { Group, Text, Image, Box, rem } from '@mantine/core';
 import { IconUpload, IconPhoto, IconX } from '@tabler/icons-react';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 
-export function CustomDropzone(props: Partial<DropzoneProps>) {
-  const [previews, setPreviews] = useState<string[]>([]);
+interface CustomDropzoneProps {
+  files: File[];
+  onDrop: (files: File[]) => void;
+  onRemove: (index: number) => void;
+}
 
-  const handleDrop = (files: File[]) => {
-    console.log('accepted files', files);
-    const newPreviews = files.map(file => URL.createObjectURL(file));
-    setPreviews(prev => [...prev, ...newPreviews]);
-  };
-
-  const handleRemove = (index: number) => {
-    setPreviews(prev => prev.filter((_, i) => i !== index));
-  };
+export function CustomDropzone({ files, onDrop, onRemove }: CustomDropzoneProps) {
+  const previews = files?.map(file => URL.createObjectURL(file));
 
   return (
     <div>
       <Dropzone
-        onDrop={handleDrop}
+        onDrop={onDrop}
         onReject={(files) => console.log('rejected files', files)}
         maxSize={5 * 1024 ** 2}
         accept={IMAGE_MIME_TYPE}
-        {...props}
       >
         <Group justify="center" gap="xl" mih={100} style={{ pointerEvents: 'none' }}>
           <Dropzone.Accept>
@@ -47,7 +41,7 @@ export function CustomDropzone(props: Partial<DropzoneProps>) {
         </Group>
       </Dropzone>
 
-      {previews.length > 0 && (
+      {previews?.length > 0 && (
         <Box mt="md">
           <Text size="sm" mb="xs">Preview:</Text>
           <Group>
@@ -68,7 +62,7 @@ export function CustomDropzone(props: Partial<DropzoneProps>) {
                   bg="red"
                   color="white"
                   style={{ cursor: 'pointer', borderRadius: '50%', width: rem(20), height: rem(20), display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  onClick={() => handleRemove(index)}
+                  onClick={() => onRemove(index)}
                 >
                   ×
                 </Box>
