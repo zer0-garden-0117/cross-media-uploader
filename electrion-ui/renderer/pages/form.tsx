@@ -10,7 +10,7 @@ import { CustomDateInput } from '../components/CustomDateInput';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { CustomTagsInput } from '../components/CustomTagsInput';
 
-export default function NextPage() {
+export default function FormPage() {
 
   return (
     <React.Fragment>

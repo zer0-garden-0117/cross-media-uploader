@@ -28,7 +28,7 @@ export default function HomePage() {
         <span>💕 </span>
       </div>
       <div className="mt-1 w-full flex-wrap flex justify-center">
-        <Link href="/next">Go to next page</Link>
+        <Link href="/form">Go to form page</Link>
       </div>
     </React.Fragment>
   )
