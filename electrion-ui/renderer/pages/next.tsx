@@ -37,7 +37,7 @@ export default function NextPage() {
       </Paper>
 
       <div className="mt-1 w-full flex-wrap flex justify-center">
-        <Link href="/home">Go to home page</Link>
+        <Link href="/script">Go to Script page</Link>
       </div>
     </React.Fragment>
   )
