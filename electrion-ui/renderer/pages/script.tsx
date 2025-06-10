@@ -1,24 +1,9 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React from 'react';
+import { useScriptExecutor } from '../hooks/useScriptExecutor';
 
 const ScriptPage = () => {
-  const [output, setOutput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const runScript = async () => {
-    setIsLoading(true);
-    setError('');
-    try {
-      const scriptPath = 'scripts/example.sh';
-      const result = await window.electronAPI.executeShellScript(scriptPath);
-      setOutput(result as string);
-    } catch (err) {
-      setError(err as string);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { runScript, output, isLoading, error } = useScriptExecutor();
 
   return (
     <React.Fragment>
