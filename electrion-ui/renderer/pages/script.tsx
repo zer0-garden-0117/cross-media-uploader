@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 
-const ScriptRunner = () => {
+const ScriptPage = () => {
   const [output, setOutput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -10,12 +10,11 @@ const ScriptRunner = () => {
     setIsLoading(true);
     setError('');
     try {
-      // スクリプトのパスを指定（publicディレクトリなどに配置）
       const scriptPath = 'scripts/example.sh';
       const result = await window.electronAPI.executeShellScript(scriptPath);
       setOutput(result as string);
     } catch (err) {
-    //   setError(err as string);
+      setError(err as string);
     } finally {
       setIsLoading(false);
     }
@@ -45,4 +44,4 @@ const ScriptRunner = () => {
   );
 };
 
-export default ScriptRunner;
+export default ScriptPage;
