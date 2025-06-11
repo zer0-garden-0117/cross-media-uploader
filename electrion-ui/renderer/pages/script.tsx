@@ -23,7 +23,7 @@ const ScriptPage = () => {
         )}
       </div>
       <div className="mt-1 w-full flex-wrap flex justify-center">
-          <Link href="/home">Go to home page</Link>
+          <Link href="/store">Go to Store page</Link>
       </div>
     </React.Fragment>
   );

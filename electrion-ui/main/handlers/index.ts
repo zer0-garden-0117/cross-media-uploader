@@ -1,10 +1,11 @@
 // handlers/index.ts
 import { ipcMain } from 'electron';
 import * as shellHandler from './shellHandler';
+import * as postHandler from './postHandler';
 
 const handlers: { [key: string]: (...args: any[]) => any } = {
   'execute-shell-script': shellHandler.executeShellScript,
-  // 他のハンドラ...
+  'save-post-data': postHandler.savePostData,
 };
 
 export function registerHandlers() {
