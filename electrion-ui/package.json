@@ -18,7 +18,8 @@
     "@tabler/icons-react": "^3.34.0",
     "dayjs": "^1.11.13",
     "electron-serve": "^1.3.0",
-    "electron-store": "^8.2.0"
+    "electron-store": "^8.2.0",
+    "node-cron": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.16",
