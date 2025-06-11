@@ -17,6 +17,13 @@ export default function StorePage() {
   const [dateValue, setDateValue] = useState<string>("");
   const [commentValue, setCommentValue] = useState<string>("");
   const [tagsValue, setTagsValue] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+  const handleDrop = async (newFiles: File[]) => {
+    setFiles(prev => [...prev, ...newFiles]);
+  };
+  const handleRemove = async (index: number) => {    
+    setFiles(prev => prev.filter((_, i) => i !== index));
+  };
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSavePost = async () => {
@@ -28,9 +35,14 @@ export default function StorePage() {
     setIsLoading(true);
     
     try {
+      // 1. 一時ファイルとして画像を保存
+      const savedImagePaths = await window.electronAPI.saveTemporaryImages(files);
+      
+      // 2. 投稿データを保存（画像はパスのみ保持）
       const result = await window.electronAPI.savePostData({
         date: dateValue,
         comment: commentValue,
+        images: savedImagePaths,
         tags: tagsValue,
       });
 
@@ -57,6 +69,10 @@ export default function StorePage() {
         <title>Next - Nextron (with-tailwindcss)</title>
       </Head>
       <Paper radius="md" p="lg" withBorder>
+        {/* 画像のD&D */}
+        <Title>画像</Title>
+        <CustomDropzone files={files} onDrop={handleDrop} onRemove={handleRemove}/>
+
         {/* 投稿日時 */}
         <Title>投稿日時</Title>
         <CustomDateInput value={dateValue} onChange={setDateValue} />
