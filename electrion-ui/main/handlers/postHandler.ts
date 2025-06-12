@@ -4,9 +4,9 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 interface PostData {
-  scheduledTime: string;
+  date: string;
   comment: string;
-  images: string[]; // 画像ファイルの絶対パス配列
+  imageData: ArrayBuffer;
   tags: string[];
 }
 
@@ -21,23 +21,20 @@ export async function savePost(data: PostData) {
   });
 
   try {
-    // 画像保存（コピー）
-    const savedImages = await Promise.all(
-      data.images.map((imgPath, index) => {
-        const ext = path.extname(imgPath);
-        const filename = `${postId}_${index}${ext}`;
-        const destPath = path.join(imagesDir, filename);
-        fs.copyFileSync(imgPath, destPath);
-        return filename;
-      })
-    );
+    // 画像保存処理
+    const imageExt = '.png'; // 拡張子（必要に応じて変更可能）
+    const imageFilename = `${postId}${imageExt}`;
+    const imagePath = path.join(imagesDir, imageFilename);
+    
+    // ArrayBufferを画像ファイルとして保存
+    fs.writeFileSync(imagePath, Buffer.from(data.imageData));
 
     // 投稿データ保存
     const postData = {
       id: postId,
-      scheduledTime: data.scheduledTime,
+      scheduledTime: data.date,
       comment: data.comment,
-      images: savedImages,
+      image: imageFilename,
       tags: data.tags,
       status: 'pending',
       createdAt: new Date().toISOString()

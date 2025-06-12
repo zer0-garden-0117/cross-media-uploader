@@ -6,7 +6,6 @@ import * as imageHandler from './imageHandler';
 
 const handlers: { [key: string]: (...args: any[]) => any } = {
   'execute-shell-script': shellHandler.executeShellScript,
-  'save-temp-images': imageHandler.registerImageHandlers,
   'save-post-data': postHandler.savePost,
 };
 

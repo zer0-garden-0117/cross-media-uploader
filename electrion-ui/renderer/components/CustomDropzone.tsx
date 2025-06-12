@@ -17,6 +17,7 @@ export function CustomDropzone({ files, onDrop, onRemove }: CustomDropzoneProps)
         onDrop={onDrop}
         onReject={(files) => console.log('rejected files', files)}
         maxSize={5 * 1024 ** 2}
+        maxFiles={1}
         accept={IMAGE_MIME_TYPE}
       >
         <Group justify="center" gap="xl" mih={100} style={{ pointerEvents: 'none' }}>

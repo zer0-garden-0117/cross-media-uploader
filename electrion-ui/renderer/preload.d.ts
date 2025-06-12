@@ -9,7 +9,7 @@ declare global {
       savePostData: (postData: {
         date: string;
         comment: string;
-        images: string[];
+        imageData: ArrayBuffer;
         tags: string[];
       }) => Promise<{ success: boolean; filePath?: string; error?: string }>;
     };

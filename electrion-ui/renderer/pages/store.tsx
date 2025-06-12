@@ -35,16 +35,14 @@ export default function StorePage() {
     setIsLoading(true);
     
     try {
-      // 1. 一時ファイルとして画像を保存
-      const savedImagePaths = await window.electronAPI.saveTemporaryImages(files);
-      
-      // 2. 投稿データを保存（画像はパスのみ保持）
-      const result = await window.electronAPI.savePostData({
+      const imageDataArrayBuffer = await files[0].arrayBuffer()
+      const postData = {
         date: dateValue,
         comment: commentValue,
-        images: savedImagePaths,
-        tags: tagsValue,
-      });
+        imageData: imageDataArrayBuffer,
+        tags: tagsValue
+      };
+      const result = await window.electronAPI.savePostData(postData);
 
       if (result.success) {
         alert('投稿が保存されました');
