@@ -1,26 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import { app } from 'electron';
-import cron from 'node-cron';
+import * as cron from 'node-cron';
+import { SavedPostData } from './PostService';
 
 const POSTS_DIR = path.join(app.getPath('home'), 'scheduled-posts');
 const IMAGES_DIR = path.join(POSTS_DIR, 'images');
-
-interface ScheduledPost {
-  id: string;
-  scheduledTime: string;
-  comment: string;
-  image: string;
-  tags: string[];
-  status: 'pending' | 'posted' | 'failed';
-}
 
 export class PostScheduler {
   private timer: cron.ScheduledTask;
 
   constructor() {
     this.initializeDirectories();
-    this.timer = cron.schedule('* * * * *', this.checkPosts.bind(this)); // 毎分実行
+    this.timer = cron.schedule('* * * * *', this.checkPosts.bind(this));
   }
 
   private initializeDirectories() {
@@ -47,17 +39,17 @@ export class PostScheduler {
     }
   }
 
-  private getPendingPosts(): ScheduledPost[] {
+  private getPendingPosts(): SavedPostData[] {
     return fs.readdirSync(POSTS_DIR)
       .filter(file => file.endsWith('.json'))
       .map(file => {
         const data = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
-        return JSON.parse(data) as ScheduledPost;
+        return JSON.parse(data) as SavedPostData;
       })
       .filter(post => post.status === 'pending');
   }
 
-  private async processPost(post: ScheduledPost) {
+  private async processPost(post: SavedPostData) {
     try {
       // 1. 画像を読み込み
       // 2. API呼び出し
