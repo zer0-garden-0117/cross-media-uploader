@@ -3,6 +3,7 @@ import path from 'path';
 import * as cron from 'node-cron';
 import { SavedPostData } from './PostService';
 import { POSTS_DIR, IMAGES_DIR } from '../config';
+import { ShellService } from './ShellService';
 
 export class PostScheduler {
   private timer: cron.ScheduledTask;
@@ -21,13 +22,20 @@ export class PostScheduler {
     }
   }
 
-  private async checkPosts() {
+private async checkPosts() {
+    console.log('スケジューラが実行されました。');
     try {
-      const now = new Date().toISOString();
+      const now = new Date();
+      const jstOffset = 9 * 60 * 60 * 1000;
+      const jstTime = new Date(now.getTime() + jstOffset);
+      const jstString = jstTime.toISOString().replace('Z', '');
+
       const posts = this.getPendingPosts();
 
       for (const post of posts) {
-        if (post.scheduledTime <= now && post.status === 'pending') {
+        console.log(`チェック中: ${post.id}, スケジュール時間: ${post.scheduledTime}, 現在時間: ${jstString}`);
+        console.log(post.scheduledTime <= jstString ? '投稿可能' : '投稿不可');
+        if (post.scheduledTime <= jstString && post.status === 'pending') {
           await this.processPost(post);
         }
       }
@@ -48,11 +56,18 @@ export class PostScheduler {
 
   private async processPost(post: SavedPostData) {
     try {
-      // 1. 画像を読み込み
-      // 2. API呼び出し
-      // ToDo: ここに実際のAPI呼び出しロジックを実装
+      const scriptPath = 'scripts/asb-uploader.sh';
+      const tagsString = post.tags.join(',');
+      const args = [
+        post.image,             // 画像パス
+        post.comment,           // コメント
+        'zer0',                 // 作者
+        'その他',               // キャラクター
+        'illustration',         // ジャンル
+        tagsString              // タグ
+      ];
+      await ShellService.executeScript(scriptPath, args);
 
-      // 3. ステータス更新
       this.updatePostStatus(post.id, 'posted');
       console.log(`投稿成功: ${post.id}`);
 

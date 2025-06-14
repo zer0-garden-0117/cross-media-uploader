@@ -50,7 +50,7 @@ export class ShellService {
     return new Promise((resolve, reject) => {
       exec(command, (error, stdout, stderr) => {
         if (error) return reject(error.message);
-        if (stderr) return reject(stderr);
+        if (stderr) console.warn('[Shell Warning]', stderr); 
         resolve(stdout);
       });
     });
