@@ -1,7 +1,7 @@
-import { app } from 'electron';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { POSTS_DIR, IMAGES_DIR } from '../config';
 
 export interface PostData {
   date: string;
@@ -21,17 +21,12 @@ export interface SavedPostData {
 }
 
 export class PostService {
-  private readonly postDir: string;
-  private readonly imagesDir: string;
-
   constructor() {
-    this.postDir = path.join(app.getPath('home'), 'scheduled-posts');
-    this.imagesDir = path.join(this.postDir, 'images');
     this.ensureDirectoriesExist();
   }
 
   private ensureDirectoriesExist(): void {
-    [this.postDir, this.imagesDir].forEach(dir => {
+    [POSTS_DIR, IMAGES_DIR].forEach(dir => {
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
       }
@@ -60,7 +55,7 @@ export class PostService {
   private async saveImage(postId: string, imageData: ArrayBuffer): Promise<string> {
     const imageExt = '.png';
     const imageFilename = `${postId}${imageExt}`;
-    const imagePath = path.join(this.imagesDir, imageFilename);
+    const imagePath = path.join(IMAGES_DIR, imageFilename);
     
     await fs.promises.writeFile(imagePath, Buffer.from(imageData));
     return imageFilename;
@@ -80,7 +75,7 @@ export class PostService {
 
   private savePostData(postId: string, data: SavedPostData): void {
     fs.writeFileSync(
-      path.join(this.postDir, `${postId}.json`),
+      path.join(POSTS_DIR, `${postId}.json`),
       JSON.stringify(data, null, 2)
     );
   }

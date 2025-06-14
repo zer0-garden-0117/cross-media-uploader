@@ -1,11 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { app } from 'electron';
 import * as cron from 'node-cron';
 import { SavedPostData } from './PostService';
-
-const POSTS_DIR = path.join(app.getPath('home'), 'scheduled-posts');
-const IMAGES_DIR = path.join(POSTS_DIR, 'images');
+import { POSTS_DIR, IMAGES_DIR } from '../config';
 
 export class PostScheduler {
   private timer: cron.ScheduledTask;
