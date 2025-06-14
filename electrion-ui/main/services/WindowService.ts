@@ -1,4 +1,3 @@
-// src/main/services/WindowService.ts
 import path from 'path';
 import { BrowserWindow, app } from 'electron';
 import serve from 'electron-serve';
