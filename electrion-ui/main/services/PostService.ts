@@ -37,8 +37,8 @@ export class PostService {
     const postId = uuidv4();
 
     try {
-      const imageFilename = await this.saveImage(postId, data.imageData);
-      const postData = this.createPostData(postId, data, imageFilename);
+      const imagePath = await this.saveImage(postId, data.imageData);
+      const postData = this.createPostData(postId, data, imagePath);
       
       this.savePostData(postId, postData);
 
@@ -58,15 +58,15 @@ export class PostService {
     const imagePath = path.join(IMAGES_DIR, imageFilename);
     
     await fs.promises.writeFile(imagePath, Buffer.from(imageData));
-    return imageFilename;
+    return imagePath;
   }
 
-  private createPostData(postId: string, data: PostData, imageFilename: string): SavedPostData {
+  private createPostData(postId: string, data: PostData, imagePath: string): SavedPostData {
     return {
       id: postId,
       scheduledTime: data.date,
       comment: data.comment,
-      image: imageFilename,
+      image: imagePath,
       tags: data.tags,
       status: 'pending',
       createdAt: new Date().toISOString()
