@@ -14,3 +14,8 @@ dist
 
 # postDir
 scheduled-posts/*
+
+# scripts
+scripts/.env
+scripts/asb_token.json
+scripts/x_token.json
