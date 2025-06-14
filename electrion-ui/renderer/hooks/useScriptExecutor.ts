@@ -10,7 +10,7 @@ export const useScriptExecutor = () => {
     setError('');
     try {
       const scriptPath = 'scripts/example.sh';
-      const result = await window.electronAPI.executeShellScript(scriptPath);
+      const result = await window.electronAPI.executeShellScript(scriptPath, ['-la']);
       setOutput(result as string);
     } catch (err) {
       setError(err as string);

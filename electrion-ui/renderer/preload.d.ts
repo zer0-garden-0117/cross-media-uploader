@@ -4,7 +4,7 @@ declare global {
   interface Window {
     ipc: IpcHandler,
     electronAPI: {
-      executeShellScript: (scriptPath: string) => Promise<string>;
+      executeShellScript: (scriptPath: string, args?: string[]) => Promise<string>,
       saveTemporaryImages: (files: File[]) => Promise<string[]>,
       savePostData: (postData: {
         date: string;

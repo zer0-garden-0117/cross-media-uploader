@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  executeShellScript: (scriptPath: string) => ipcRenderer.invoke('execute-shell-script', scriptPath),
+  executeShellScript: (scriptPath: string, args?: string[]) => ipcRenderer.invoke('execute-shell-script', scriptPath, args),
   savePostData: (postData: {
     date: string;
     comment: string;
