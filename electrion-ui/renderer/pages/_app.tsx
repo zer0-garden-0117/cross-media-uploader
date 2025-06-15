@@ -7,6 +7,7 @@ import '../styles/globals.css'
 import '@mantine/core/styles.css';
 import '@mantine/dropzone/styles.css';
 import '@mantine/dates/styles.css';
+import 'mantine-react-table/styles.css';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { CustomNavbar } from '../components/CustomNavbar';
 
