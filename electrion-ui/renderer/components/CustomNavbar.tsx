@@ -30,8 +30,8 @@ export function CustomNavbar() {
     <nav>
       <Stack justify="center" gap={10}>
         <NavbarLink icon={IconHome2} label="Home" link='/home'/>
-        <NavbarLink icon={IconPencil} label="Post" link='/post'/>
-        <NavbarLink icon={IconPencilCog} label="Edit" link='/edit'/>
+        <NavbarLink icon={IconPencil} label="PostForm" link='/postform'/>
+        <NavbarLink icon={IconPencilCog} label="PostList" link='/postlist'/>
       </Stack>
     </nav>
   );

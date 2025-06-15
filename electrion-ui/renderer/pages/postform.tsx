@@ -14,7 +14,7 @@ import { CustomTextInput } from '../components/CustomTextInput';
 import { CustomTagsInput } from '../components/CustomTagsInput';
 import { PostData } from '../../post';
 
-export default function PostPage() {
+export default function PostFormPage() {
   const [dateValue, setDateValue] = useState<string>("");
   const [commentValue, setCommentValue] = useState<string>("");
   const [tagsValue, setTagsValue] = useState<string[]>([]);
