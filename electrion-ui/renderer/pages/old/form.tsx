@@ -8,10 +8,10 @@ import {
   Space,
   Title,
 } from '@mantine/core';
-import { CustomDropzone } from '../components/CustomDropzone';
-import { CustomDateInput } from '../components/CustomDateInput';
-import { CustomTextInput } from '../components/CustomTextInput';
-import { CustomTagsInput } from '../components/CustomTagsInput';
+import { CustomDropzone } from '../../components/CustomDropzone';
+import { CustomDateInput } from '../../components/CustomDateInput';
+import { CustomTextInput } from '../../components/CustomTextInput';
+import { CustomTagsInput } from '../../components/CustomTagsInput';
 
 export default function FormPage() {
   const [dateValue, setDateValue] = useState<string>("");
@@ -28,7 +28,7 @@ export default function FormPage() {
   return (
     <React.Fragment>
       <Head>
-        <title>Next - Nextron (with-tailwindcss)</title>
+        <title>Cross Media Uploader</title>
       </Head>
       <Paper radius="md" p="lg" withBorder>
         {/* 画像のD&D */}

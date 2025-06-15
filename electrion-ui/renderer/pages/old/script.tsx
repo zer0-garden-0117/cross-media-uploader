@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { useScriptExecutor } from '../hooks/useScriptExecutor';
+import { useScriptExecutor } from '../../hooks/useScriptExecutor';
 
 const ScriptPage = () => {
   const { runScript, output, isLoading, error } = useScriptExecutor();

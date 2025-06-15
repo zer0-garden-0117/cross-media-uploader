@@ -13,7 +13,7 @@ import { CustomDateInput } from '../components/CustomDateInput';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { CustomTagsInput } from '../components/CustomTagsInput';
 
-export default function StorePage() {
+export default function PostPage() {
   const [dateValue, setDateValue] = useState<string>("");
   const [commentValue, setCommentValue] = useState<string>("");
   const [tagsValue, setTagsValue] = useState<string[]>([]);
@@ -64,7 +64,7 @@ export default function StorePage() {
   return (
     <React.Fragment>
       <Head>
-        <title>Next - Nextron (with-tailwindcss)</title>
+        <title>Cross Media Uploader</title>
       </Head>
       <Paper radius="md" p="lg" withBorder>
         {/* 画像のD&D */}
