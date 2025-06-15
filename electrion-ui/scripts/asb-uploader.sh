@@ -13,6 +13,7 @@ IMAGE_TAG_CREATOR="${3:-creator}"     # 第3引数（デフォルト: creator）
 IMAGE_TAG_CHARACTER="${4:-その他}"    # 第4引数（デフォルト: その他）
 IMAGE_TAG_GENRE="${5:-illustration}"  # 第5引数（デフォルト: illustration）
 IMAGE_TAG_OTHERS="${6:-test}"         # 第6引数（デフォルト: test）
+TAGS_JSON=$(echo "\"${IMAGE_TAG_OTHERS}\"" | jq 'split(",")')
 WORK_DETAILS='{
   "apiWork": {
     "workId": "",
@@ -31,7 +32,7 @@ WORK_DETAILS='{
     "creators": ["'"${IMAGE_TAG_CREATOR}"'"],
     "genres": ["'"${IMAGE_TAG_GENRE}"'"],
     "formats": [""],
-    "others": ["'"${IMAGE_TAG_OTHERS}"'"]
+    "others": '"${TAGS_JSON}"'
   }
 }'
 
@@ -109,6 +110,9 @@ function post_work() {
   
   # 作品詳細をBase64エンコード
   local works_details_base64=$(echo -n "${WORK_DETAILS}" | base64)
+
+  echo "実行されるcurlコマンド:"
+  echo "curl -vX POST '${ASB_API_ENDPOINT}/works' -H 'Authorization: Bearer ${USER_TOKEN}' -H 'Content-Type: multipart/form-data' -F 'titleImage=@${IMAGE_FILE}' -F 'images=@${IMAGE_FILE}' -F 'worksDetailsBase64=${works_details_base64}'"
   
   local response=$(curl -vX POST "${ASB_API_ENDPOINT}/works" \
     -H "Authorization: Bearer ${USER_TOKEN}" \
