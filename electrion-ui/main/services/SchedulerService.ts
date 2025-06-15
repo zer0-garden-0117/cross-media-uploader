@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import * as cron from 'node-cron';
-import { SavedPostData } from './PostService';
+import { SavedPostData } from '../../post';
 import { POSTS_DIR, IMAGES_DIR } from '../config';
 import { ShellService } from './ShellService';
 

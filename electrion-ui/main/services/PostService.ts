@@ -2,23 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { POSTS_DIR, IMAGES_DIR } from '../config';
-
-export interface PostData {
-  date: string;
-  comment: string;
-  imageData: ArrayBuffer;
-  tags: string[];
-}
-
-export interface SavedPostData {
-  id: string;
-  scheduledTime: string;
-  comment: string;
-  image: string;
-  tags: string[];
-  status: 'pending' | 'posted' | 'failed';
-  createdAt: string;
-}
+import { PostData, SavedPostData } from '../../post';
 
 export class PostService {
   constructor() {
@@ -50,6 +34,16 @@ export class PostService {
         error: error instanceof Error ? error.message : 'Unknown error' 
       };
     }
+  }
+
+  public async getPostDatas(): Promise<SavedPostData[]> {
+    return fs.readdirSync(POSTS_DIR)
+      .filter(file => file.endsWith('.json'))
+      .map(file => {
+        const data = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
+        return JSON.parse(data) as SavedPostData;
+      })
+      .filter(post => post.status === 'pending');
   }
 
   private async saveImage(postId: string, imageData: ArrayBuffer): Promise<string> {

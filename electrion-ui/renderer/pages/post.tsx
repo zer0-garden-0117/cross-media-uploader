@@ -12,6 +12,7 @@ import { CustomDropzone } from '../components/CustomDropzone';
 import { CustomDateInput } from '../components/CustomDateInput';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { CustomTagsInput } from '../components/CustomTagsInput';
+import { PostData } from '../../post';
 
 export default function PostPage() {
   const [dateValue, setDateValue] = useState<string>("");
@@ -36,7 +37,7 @@ export default function PostPage() {
     
     try {
       const imageDataArrayBuffer = await files[0].arrayBuffer()
-      const postData = {
+      const postData: PostData = {
         date: dateValue,
         comment: commentValue,
         imageData: imageDataArrayBuffer,

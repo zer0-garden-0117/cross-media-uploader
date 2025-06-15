@@ -6,6 +6,7 @@ import * as postHandler from './postHandler';
 const handlers: { [key: string]: (...args: any[]) => any } = {
   'execute-shell-script': shellHandler.executeShellScript,
   'save-post-data': postHandler.savePost,
+  'get-post-datas': postHandler.getPostDatas,
 };
 
 export function registerHandlers() {
