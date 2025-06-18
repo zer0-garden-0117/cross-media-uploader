@@ -19,34 +19,13 @@ interface PostFormProps {
 
 export function PostForm({ postId }: PostFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!postId) return;
-      try {
-        const result = await window.electronAPI.getPostData(postId);
-        const postData: PostData = result.data;
-        const imageBuffer: ArrayBuffer = result.imageBuffer;
-        const file = new File([imageBuffer], postData.image || 'image.png');
-        setDateValue(postData.scheduledTime)
-        setCommentValue(postData.comment)
-        setTagsValue(postData.tags)
-        setFiles([file]);
-        setIdValue(postId);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [postId]);
-
+  const [isEditing, setIsEditing] = useState(false);
   const [idValue, setIdValue] = useState<string>("");
   const [dateValue, setDateValue] = useState<string>("");
   const [commentValue, setCommentValue] = useState<string>("");
   const [tagsValue, setTagsValue] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
+
   const handleDrop = async (newFiles: File[]) => {
     setFiles(prev => [...prev, ...newFiles]);
   };
@@ -87,6 +66,30 @@ export function PostForm({ postId }: PostFormProps) {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!postId) return;
+      try {
+        const result = await window.electronAPI.getPostData(postId);
+        const postData: PostData = result.data;
+        const imageBuffer: ArrayBuffer = result.imageBuffer;
+        const file = new File([imageBuffer], postData.image || 'image.png');
+        setDateValue(postData.scheduledTime)
+        setCommentValue(postData.comment)
+        setTagsValue(postData.tags)
+        setFiles([file]);
+        setIdValue(postId);
+        setIsEditing(true);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [postId]);
+
   return (
     <Paper radius="md" p="lg" withBorder>
     {/* 画像のD&D */}
@@ -113,7 +116,7 @@ export function PostForm({ postId }: PostFormProps) {
       size='xs'
       onClick={handleSavePost}
     >
-        予約投稿
+      {isEditing ? '変更を保存' : '予約投稿'}
     </Button>
     </Flex>
 
