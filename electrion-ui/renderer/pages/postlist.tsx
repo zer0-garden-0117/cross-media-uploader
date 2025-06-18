@@ -14,6 +14,24 @@ export default function PostListPage() {
   const [data, setData] = useState<SavedPostData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const handleDeletePost = async (postId: string) => {
+    setIsLoading(true);
+    try {
+      const result = await window.electronAPI.deletePostData(postId);
+      if (result.success) {
+        const postData = await window.electronAPI.getPostDatas();
+        setData(postData);
+      } else {
+        alert('削除に失敗しました');
+      }
+    } catch (error) {
+        console.error(error);
+        alert('エラーが発生しました');
+    } finally {
+        setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -39,6 +57,10 @@ export default function PostListPage() {
       {
         accessorKey: 'comment',
         header: 'comment',
+      },
+      {
+        accessorKey: 'id',
+        header: 'postId',
       },
       {
         accessorKey: 'image',
@@ -82,9 +104,19 @@ export default function PostListPage() {
         right: ['mrt-row-actions'],
       },
     },
-    renderRowActionMenuItems: () => (
+    renderRowActionMenuItems: ({ row }) => (
       <>
-        <Menu.Item>Edit</Menu.Item>
+        <Menu.Item
+          color='blue'
+        >
+          Edit
+        </Menu.Item>
+        <Menu.Item
+          onClick={() => handleDeletePost(row.original.id)}
+          color="red"
+        >
+          Delete
+        </Menu.Item>
       </>
     ),
     renderTopToolbar: ({ table }) => {
