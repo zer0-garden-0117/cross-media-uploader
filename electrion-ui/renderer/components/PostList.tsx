@@ -36,7 +36,6 @@ export function PostList() {
     const fetchData = async () => {
       try {
         const postData = await window.electronAPI.getPostDatas();
-        console.log(postData)
         setData(postData);
       } catch (error) {
         console.error('Error fetching data:', error);

@@ -103,7 +103,6 @@ export class PostService {
  public async getPostData(postId: string): Promise<{ data: PostData; imageBuffer: ArrayBuffer }> {
     try {
         const postFilePath = path.join(POSTS_DIR, `${postId}.json`);
-        console.log(postFilePath)
         if (!fs.existsSync(postFilePath)) {
             throw new Error('投稿が見つかりません');
         }

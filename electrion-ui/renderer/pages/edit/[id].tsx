@@ -14,7 +14,6 @@ export default function PostEditPage({ postId }: PostEditPageProps) {
 
   useEffect(() => {
     if (id) {
-      console.log("postId:", id);
       setIsReady(true);
     }
   }, [id]);
