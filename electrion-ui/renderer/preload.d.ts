@@ -11,7 +11,7 @@ declare global {
       editPostData: (postId: string, postData: PostData) => Promise<{ success: boolean; error?: string }>;
       deletePostData: (postId: string) => Promise<{ success: boolean; error?: string }>;
       getPostDatas: () => Promise<SavedPostData[]>;
-      getPostData: (postId: string) => Promise<SavedPostData> 
+      getPostData: (postId: string) => Promise<{ data:SavedPostData; imageBuffer: ArrayBuffer }>; 
     };
   }
 }

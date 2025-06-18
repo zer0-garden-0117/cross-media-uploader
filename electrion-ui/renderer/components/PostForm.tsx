@@ -10,7 +10,7 @@ import { CustomDropzone } from '../components/CustomDropzone';
 import { CustomDateInput } from '../components/CustomDateInput';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { CustomTagsInput } from '../components/CustomTagsInput';
-import { PostData } from '../../post';
+import { PostData, SavedPostData } from '../../post';
 
 interface PostFormProps {
   postId?: string;
@@ -18,15 +18,18 @@ interface PostFormProps {
 
 export function PostForm({ postId }: PostFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  console.log(postId)
   useEffect(() => {
     const fetchData = async () => {
       if (!postId) return;
       try {
-        const postData = await window.electronAPI.getPostData(postId);
+        const result = await window.electronAPI.getPostData(postId);
+        const postData: SavedPostData = result.data;
+        const imageBuffer: ArrayBuffer = result.imageBuffer;
+        const file = new File([imageBuffer], postData.image || 'image.png');
         setDateValue(postData.createdAt)
         setCommentValue(postData.comment)
         setTagsValue(postData.tags)
+        setFiles([file]);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
