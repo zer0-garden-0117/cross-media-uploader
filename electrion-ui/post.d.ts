@@ -1,16 +1,10 @@
 export interface PostData {
-  date: string;
-  comment: string;
-  imageData: ArrayBuffer;
-  tags: string[];
-}
-
-export interface SavedPostData {
-  id: string;
+  id?: string;
+  image?: string;
+  imageData?: ArrayBuffer;
+  status?: 'pending' | 'posted' | 'failed';
   scheduledTime: string;
   comment: string;
-  image: string;
   tags: string[];
-  status: 'pending' | 'posted' | 'failed';
-  createdAt: string;
+  createdAt?: string;
 }

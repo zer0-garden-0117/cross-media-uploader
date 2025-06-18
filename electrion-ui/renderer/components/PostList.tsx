@@ -8,10 +8,10 @@ import {
   type MRT_ColumnDef,
 } from 'mantine-react-table';
 import { Box, Flex, Menu, Image } from '@mantine/core';
-import { SavedPostData } from '../../post';
+import { PostData } from '../../post';
 
 export function PostList() {
-  const [data, setData] = useState<SavedPostData[]>([]);
+  const [data, setData] = useState<PostData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleDeletePost = async (postId: string) => {
@@ -48,7 +48,7 @@ export function PostList() {
     fetchData();
   }, []);
 
-  const columns = useMemo<MRT_ColumnDef<SavedPostData>[]>(
+  const columns = useMemo<MRT_ColumnDef<PostData>[]>(
     () => [
       {
         accessorKey: 'scheduledTime',

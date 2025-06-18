@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import * as cron from 'node-cron';
-import { SavedPostData } from '../../post';
+import { PostData } from '../../post';
 import { POSTS_DIR, IMAGES_DIR } from '../config';
 import { ShellService } from './ShellService';
 
@@ -44,17 +44,17 @@ private async checkPosts() {
     }
   }
 
-  private getPendingPosts(): SavedPostData[] {
+  private getPendingPosts(): PostData[] {
     return fs.readdirSync(POSTS_DIR)
       .filter(file => file.endsWith('.json'))
       .map(file => {
         const data = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
-        return JSON.parse(data) as SavedPostData;
+        return JSON.parse(data) as PostData;
       })
       .filter(post => post.status === 'pending');
   }
 
-  private async processPost(post: SavedPostData) {
+  private async processPost(post: PostData) {
     try {
       const scriptPath = 'scripts/asb-uploader.sh';
       const tagsString = post.tags.join(',');

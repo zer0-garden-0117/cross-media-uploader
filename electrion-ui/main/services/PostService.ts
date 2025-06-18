@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { POSTS_DIR, IMAGES_DIR } from '../config';
-import { PostData, SavedPostData } from '../../post';
+import { PostData } from '../../post';
 
 export class PostService {
   constructor() {
@@ -18,7 +18,7 @@ export class PostService {
   }
 
   public async savePost(data: PostData): Promise<{ success: boolean; postId?: string; error?: string }> {
-    const postId = uuidv4();
+    const postId = data.id === '' ? uuidv4() : data.id;
 
     try {
       const imagePath = await this.saveImage(postId, data.imageData);
@@ -69,7 +69,7 @@ export class PostService {
       const postFilePath = path.join(POSTS_DIR, `${postId}.json`);
       
       // 画像ファイルのパスを取得
-      const postData = JSON.parse(fs.readFileSync(postFilePath, 'utf-8')) as SavedPostData;
+      const postData = JSON.parse(fs.readFileSync(postFilePath, 'utf-8')) as PostData;
       const imagePath = postData.image;
 
       // 投稿データを削除
@@ -90,17 +90,17 @@ export class PostService {
     }
   }
 
-  public async getPostDatas(): Promise<SavedPostData[]> {
+  public async getPostDatas(): Promise<PostData[]> {
     return fs.readdirSync(POSTS_DIR)
       .filter(file => file.endsWith('.json'))
       .map(file => {
         const data = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
-        return JSON.parse(data) as SavedPostData;
+        return JSON.parse(data) as PostData;
       })
       .filter(post => post.status === 'pending');
   }
 
- public async getPostData(postId: string): Promise<{ data: SavedPostData; imageBuffer: ArrayBuffer }> {
+ public async getPostData(postId: string): Promise<{ data: PostData; imageBuffer: ArrayBuffer }> {
     try {
         const postFilePath = path.join(POSTS_DIR, `${postId}.json`);
         console.log(postFilePath)
@@ -109,7 +109,7 @@ export class PostService {
         }
 
         const data = fs.readFileSync(postFilePath, 'utf-8');
-        const postData = JSON.parse(data) as SavedPostData;
+        const postData = JSON.parse(data) as PostData;
         let imageBuffer: ArrayBuffer | undefined;
         let imageMimeType: string | undefined;
         if (postData.image && fs.existsSync(postData.image)) {
@@ -135,10 +135,10 @@ export class PostService {
     return imagePath;
   }
 
-  private createPostData(postId: string, data: PostData, imagePath: string): SavedPostData {
+  private createPostData(postId: string, data: PostData, imagePath: string): PostData {
     return {
       id: postId,
-      scheduledTime: data.date,
+      scheduledTime: data.scheduledTime,
       comment: data.comment,
       image: imagePath,
       tags: data.tags,
@@ -147,7 +147,7 @@ export class PostService {
     };
   }
 
-  private savePostData(postId: string, data: SavedPostData): void {
+  private savePostData(postId: string, data: PostData): void {
     fs.writeFileSync(
       path.join(POSTS_DIR, `${postId}.json`),
       JSON.stringify(data, null, 2)

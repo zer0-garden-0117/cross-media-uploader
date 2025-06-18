@@ -1,5 +1,5 @@
 import { IpcHandler } from '../main/preload'
-import { PostData, SavedPostData } from '../post'
+import { PostData } from '../post'
 
 declare global {
   interface Window {
@@ -10,8 +10,8 @@ declare global {
       savePostData: (postData: PostData) => Promise<{ success: boolean; filePath?: string; error?: string }>;
       editPostData: (postId: string, postData: PostData) => Promise<{ success: boolean; error?: string }>;
       deletePostData: (postId: string) => Promise<{ success: boolean; error?: string }>;
-      getPostDatas: () => Promise<SavedPostData[]>;
-      getPostData: (postId: string) => Promise<{ data:SavedPostData; imageBuffer: ArrayBuffer }>; 
+      getPostDatas: () => Promise<PostData[]>;
+      getPostData: (postId: string) => Promise<{ data:PostData; imageBuffer: ArrayBuffer }>; 
     };
   }
 }

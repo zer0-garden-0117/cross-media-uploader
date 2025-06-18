@@ -10,7 +10,7 @@ import { CustomDropzone } from '../components/CustomDropzone';
 import { CustomDateInput } from '../components/CustomDateInput';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { CustomTagsInput } from '../components/CustomTagsInput';
-import { PostData, SavedPostData } from '../../post';
+import { PostData } from '../../post';
 
 interface PostFormProps {
   postId?: string;
@@ -23,13 +23,14 @@ export function PostForm({ postId }: PostFormProps) {
       if (!postId) return;
       try {
         const result = await window.electronAPI.getPostData(postId);
-        const postData: SavedPostData = result.data;
+        const postData: PostData = result.data;
         const imageBuffer: ArrayBuffer = result.imageBuffer;
         const file = new File([imageBuffer], postData.image || 'image.png');
         setDateValue(postData.createdAt)
         setCommentValue(postData.comment)
         setTagsValue(postData.tags)
         setFiles([file]);
+        setIdValue(postId);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -40,6 +41,7 @@ export function PostForm({ postId }: PostFormProps) {
     fetchData();
   }, [postId]);
 
+  const [idValue, setIdValue] = useState<string>("");
   const [dateValue, setDateValue] = useState<string>("");
   const [commentValue, setCommentValue] = useState<string>("");
   const [tagsValue, setTagsValue] = useState<string[]>([]);
@@ -62,7 +64,8 @@ export function PostForm({ postId }: PostFormProps) {
     try {
       const imageDataArrayBuffer = await files[0].arrayBuffer()
       const postData: PostData = {
-        date: dateValue,
+        id: idValue,
+        scheduledTime: dateValue,
         comment: commentValue,
         imageData: imageDataArrayBuffer,
         tags: tagsValue
