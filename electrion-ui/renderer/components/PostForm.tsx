@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Flex,
@@ -17,6 +17,26 @@ interface PostFormProps {
 }
 
 export function PostForm({ postId }: PostFormProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(postId)
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!postId) return;
+      try {
+        const postData = await window.electronAPI.getPostData(postId);
+        setDateValue(postData.createdAt)
+        setCommentValue(postData.comment)
+        setTagsValue(postData.tags)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [postId]);
+
   const [dateValue, setDateValue] = useState<string>("");
   const [commentValue, setCommentValue] = useState<string>("");
   const [tagsValue, setTagsValue] = useState<string[]>([]);
@@ -27,7 +47,6 @@ export function PostForm({ postId }: PostFormProps) {
   const handleRemove = async (index: number) => {    
     setFiles(prev => prev.filter((_, i) => i !== index));
   };
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSavePost = async () => {
     if (!dateValue || !commentValue) {
@@ -87,8 +106,8 @@ export function PostForm({ postId }: PostFormProps) {
     {/* 予約投稿/編集ボタン */}
     <Flex justify="right" align="center">
     <Button
-        size='xs'
-        onClick={handleSavePost}
+      size='xs'
+      onClick={handleSavePost}
     >
         予約投稿
     </Button>
