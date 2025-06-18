@@ -36,6 +36,60 @@ export class PostService {
     }
   }
 
+  public async editPost(postId: string, data: PostData): Promise<{ success: boolean; error?: string }> {
+    try {
+      // 既存の投稿データを取得
+      const postFilePath = path.join(POSTS_DIR, `${postId}.json`);
+      if (!fs.existsSync(postFilePath)) {
+        throw new Error('投稿が見つかりません');
+      }
+
+      // 画像を更新
+      const imagePath = await this.saveImage(postId, data.imageData);
+      
+      // 新しい投稿データを作成
+      const postData = this.createPostData(postId, data, imagePath);
+      
+      // 投稿データを更新
+      this.savePostData(postId, postData);
+
+      return { success: true };
+    } catch (error) {
+      console.error('投稿編集エラー:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  public async deletePost(postId: string): Promise<{ success: boolean; error?: string }> {
+    try {
+      // 投稿データファイルのパス
+      const postFilePath = path.join(POSTS_DIR, `${postId}.json`);
+      
+      // 画像ファイルのパスを取得
+      const postData = JSON.parse(fs.readFileSync(postFilePath, 'utf-8')) as SavedPostData;
+      const imagePath = postData.image;
+
+      // 投稿データを削除
+      fs.unlinkSync(postFilePath);
+
+      // 画像ファイルが存在すれば削除
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error('投稿削除エラー:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
   public async getPostDatas(): Promise<SavedPostData[]> {
     return fs.readdirSync(POSTS_DIR)
       .filter(file => file.endsWith('.json'))

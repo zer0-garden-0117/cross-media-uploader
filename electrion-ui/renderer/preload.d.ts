@@ -8,6 +8,8 @@ declare global {
       executeShellScript: (scriptPath: string, args?: string[]) => Promise<string>,
       saveTemporaryImages: (files: File[]) => Promise<string[]>,
       savePostData: (postData: PostData) => Promise<{ success: boolean; filePath?: string; error?: string }>;
+      editPostData: (postId: string, postData: PostData) => Promise<{ success: boolean; error?: string }>;
+      deletePostData: (postId: string) => Promise<{ success: boolean; error?: string }>;
       getPostDatas: () => Promise<SavedPostData[]> 
     };
   }
