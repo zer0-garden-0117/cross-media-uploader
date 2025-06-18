@@ -11,6 +11,7 @@ import { CustomDateInput } from '../components/CustomDateInput';
 import { CustomTextInput } from '../components/CustomTextInput';
 import { CustomTagsInput } from '../components/CustomTagsInput';
 import { PostData } from '../../post';
+import router from 'next/router';
 
 interface PostFormProps {
   postId?: string;
@@ -26,7 +27,7 @@ export function PostForm({ postId }: PostFormProps) {
         const postData: PostData = result.data;
         const imageBuffer: ArrayBuffer = result.imageBuffer;
         const file = new File([imageBuffer], postData.image || 'image.png');
-        setDateValue(postData.createdAt)
+        setDateValue(postData.scheduledTime)
         setCommentValue(postData.comment)
         setTagsValue(postData.tags)
         setFiles([file]);
@@ -74,10 +75,7 @@ export function PostForm({ postId }: PostFormProps) {
 
       if (result.success) {
         alert('投稿が保存されました');
-        // フォームをリセット
-        setDateValue('');
-        setCommentValue('');
-        setTagsValue([]);
+        router.push(`/postlist`);
       } else {
         alert('保存に失敗しました');
       }
