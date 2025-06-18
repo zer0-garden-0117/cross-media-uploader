@@ -9,6 +9,7 @@ const handlers: { [key: string]: (...args: any[]) => any } = {
   'edit-post-data': postHandler.editPost,
   'delete-post-data': postHandler.deletePost,
   'get-post-datas': postHandler.getPostDatas,
+  'get-post-data': postHandler.getPostData,
 };
 
 export function registerHandlers() {

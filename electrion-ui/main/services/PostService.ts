@@ -100,6 +100,22 @@ export class PostService {
       .filter(post => post.status === 'pending');
   }
 
+ public async getPostData(postId: string): Promise<SavedPostData> {
+    try {
+        const postFilePath = path.join(POSTS_DIR, `${postId}.json`);
+        console.log(postFilePath)
+        if (!fs.existsSync(postFilePath)) {
+            throw new Error('投稿が見つかりません');
+        }
+        
+        const data = fs.readFileSync(postFilePath, 'utf-8');
+        return JSON.parse(data) as SavedPostData;
+    } catch (error) {
+        console.error('投稿データ取得エラー:', error);
+        throw error;
+    }
+}
+
   private async saveImage(postId: string, imageData: ArrayBuffer): Promise<string> {
     const imageExt = '.png';
     const imageFilename = `${postId}${imageExt}`;

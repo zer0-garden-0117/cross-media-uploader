@@ -10,7 +10,8 @@ declare global {
       savePostData: (postData: PostData) => Promise<{ success: boolean; filePath?: string; error?: string }>;
       editPostData: (postId: string, postData: PostData) => Promise<{ success: boolean; error?: string }>;
       deletePostData: (postId: string) => Promise<{ success: boolean; error?: string }>;
-      getPostDatas: () => Promise<SavedPostData[]> 
+      getPostDatas: () => Promise<SavedPostData[]>;
+      getPostData: (postId: string) => Promise<SavedPostData> 
     };
   }
 }

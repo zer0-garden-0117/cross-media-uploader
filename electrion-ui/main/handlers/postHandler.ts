@@ -20,3 +20,8 @@ export async function getPostDatas() {
   const postService = new PostService();
   return await postService.getPostDatas();
 }
+
+export async function getPostData(postId: string) {
+  const postService = new PostService();
+  return await postService.getPostData(postId);
+}

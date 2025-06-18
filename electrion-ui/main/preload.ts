@@ -7,4 +7,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   editPostData: (postId: string, postData: PostData) => ipcRenderer.invoke('edit-post-data', postId, postData),
   deletePostData: (postId: string) => ipcRenderer.invoke('delete-post-data', postId),
   getPostDatas: () => ipcRenderer.invoke('get-post-datas'),
+  getPostData: (postId: string) => ipcRenderer.invoke('get-post-data'),
 });
