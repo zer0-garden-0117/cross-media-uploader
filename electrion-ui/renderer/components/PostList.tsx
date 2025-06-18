@@ -1,4 +1,5 @@
 import React, { useMemo, useEffect, useState } from 'react'
+import router from 'next/router';
 import {
   MantineReactTable,
   MRT_GlobalFilterTextInput,
@@ -106,6 +107,7 @@ export function PostList() {
     renderRowActionMenuItems: ({ row }) => (
       <>
         <Menu.Item
+          onClick={() => router.push(`/edit/${row.original.id}`)}
           color='blue'
         >
           Edit
