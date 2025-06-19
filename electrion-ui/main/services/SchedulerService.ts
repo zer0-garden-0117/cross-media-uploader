@@ -36,7 +36,13 @@ private async checkPosts() {
         console.log(`チェック中: ${post.id}, スケジュール時間: ${post.scheduledTime}, 現在時間: ${jstString}`);
         console.log(post.scheduledTime <= jstString ? '投稿可能' : '投稿不可');
         if (post.scheduledTime <= jstString && post.status === 'pending') {
-          await this.processPost(post);
+          post.targets.forEach(target => {
+            if (target === 'asb') {
+              this.processPostToASB(post);
+            } else if (target === 'x') {
+              this.processPostToX(post);
+            }
+          });
         }
       }
     } catch (error) {
@@ -54,7 +60,7 @@ private async checkPosts() {
       .filter(post => post.status === 'pending');
   }
 
-  private async processPost(post: PostData) {
+  private async processPostToASB(post: PostData) {
     try {
       const scriptPath = 'scripts/asb-uploader.sh';
       const tagsString = post.tags.join(',');
@@ -65,6 +71,24 @@ private async checkPosts() {
         post.character,         // キャラクター
         post.genre,             // ジャンル
         tagsString              // タグ
+      ];
+      await ShellService.executeScript(scriptPath, args);
+
+      this.updatePostStatus(post.id, 'posted');
+      console.log(`投稿成功: ${post.id}`);
+
+    } catch (error) {
+      this.updatePostStatus(post.id, 'failed');
+      console.error(`投稿失敗: ${post.id}`, error);
+    }
+  }
+
+    private async processPostToX(post: PostData) {
+    try {
+      const scriptPath = 'scripts/x-uploader.sh';
+      const args = [
+        post.image,             // 画像パス
+        post.comment,           // コメント
       ];
       await ShellService.executeScript(scriptPath, args);
 
