@@ -7,13 +7,16 @@ import {
   Space,
   Title,
 } from '@mantine/core';
-import { PostData } from '../../post';
 import { CustomDropzone } from './CustomDropzone';
 import { CustomDateInput } from './CustomDateInput';
 import { CustomTextInput } from './CustomTextInput';
 import { CustomTagsInput } from './CustomTagsInput';
 import { CustomRadio } from './CustomRadio';
 import { CustomCheckbox } from './CustomCheckbox';
+import { PostData } from '../../shared/interface/post';
+import { AllCharacterType, CharacterType } from '../../shared/types/character';
+import { AllGenreType, GenreType } from '../../shared/types/genre';
+import { AllTargetType, TargetType } from '../../shared/types/target';
 
 interface PostFormProps {
   postId?: string;
@@ -25,14 +28,14 @@ export function PostForm({ postId }: PostFormProps) {
   const [idValue, setIdValue] = useState<string>("");
   const [dateValue, setDateValue] = useState<string>("");
   const [commentValue, setCommentValue] = useState<string>("");
-  const [genreValue, setGenreValue] = useState<string>("");
-  const [characterValue, setCharacterValue] = useState<string>("");
+  const [genreValue, setGenreValue] = useState<GenreType>(GenreType.ILLUSTRATION);
+  const [characterValue, setCharacterValue] = useState<CharacterType>(CharacterType.OTHER);
   const [tagsValue, setTagsValue] = useState<string[]>([]);
-  const [targetsValue, setTargetsValue] = useState<string[]>([]);
+  const [targetsValue, setTargetsValue] = useState<TargetType[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const genreOptions = ["illustration", "icon"]
-  const characterOptions = ["その他", "零崎真白", "零崎くるみ", "零崎鈴", "零崎蒼"]
-  const targetOptions = ["ASB", "X", "Bluesky"]
+  const genreOptions = AllGenreType
+  const characterOptions = AllCharacterType
+  const targetOptions = AllTargetType
 
   const handleDrop = async (newFiles: File[]) => {
     setFiles(prev => [...prev, ...newFiles]);
@@ -42,6 +45,7 @@ export function PostForm({ postId }: PostFormProps) {
   };
 
   const validateForm = (): boolean => {
+    console.log(targetsValue)
     const missingFields = [];
     if (!dateValue) missingFields.push('投稿日時');
     if (!commentValue) missingFields.push('コメント');
@@ -132,11 +136,19 @@ export function PostForm({ postId }: PostFormProps) {
   
     {/* ジャンル */}
     <Title size="sx">ジャンル</Title>
-    <CustomRadio options={genreOptions} value={genreValue} onChange={setGenreValue} />
+    <CustomRadio
+      options={genreOptions}
+      value={genreValue}
+      onChange={(val: string) => setGenreValue(val as GenreType)}
+    />
 
     {/* キャラクター */}
     <Title size="sx">キャラクター</Title>
-    <CustomRadio options={characterOptions} value={characterValue} onChange={setCharacterValue} />
+    <CustomRadio
+      options={characterOptions}
+      value={characterValue}
+      onChange={(val: string) => setCharacterValue(val as CharacterType)}
+    />
 
     {/* タグ */}
     <Title size="sx">タグ</Title>
@@ -144,7 +156,11 @@ export function PostForm({ postId }: PostFormProps) {
 
     {/* 投稿先 */}
     <Title size="sx">投稿先</Title>
-    <CustomCheckbox options={targetOptions} value={targetsValue} onChange={setTargetsValue} />
+    <CustomCheckbox
+      options={targetOptions}
+      value={targetsValue as TargetType[] as string[]}
+      onChange={(vals: string[]) => setTargetsValue(vals as TargetType[])}
+    />
 
     <Space h="xl" />
 

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { POSTS_DIR, IMAGES_DIR } from '../config';
-import { PostData } from '../../post';
+import { PostData } from '../../shared/interface/post';
 
 export class PostService {
   constructor() {

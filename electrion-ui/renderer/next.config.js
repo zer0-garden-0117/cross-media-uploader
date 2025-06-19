@@ -6,6 +6,7 @@ module.exports = {
   images: {
     unoptimized: true,
   },
+  transpilePackages: ['shared'],
   webpack: (config) => {
     return config
   },

@@ -8,7 +8,7 @@ import {
   type MRT_ColumnDef,
 } from 'mantine-react-table';
 import { Box, Flex, Menu, Image } from '@mantine/core';
-import { PostData } from '../../post';
+import { PostData } from '../../shared/interface/post';
 
 export function PostList() {
   const [data, setData] = useState<PostData[]>([]);

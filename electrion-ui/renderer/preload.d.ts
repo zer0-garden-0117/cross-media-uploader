@@ -1,5 +1,5 @@
 import { IpcHandler } from '../main/preload'
-import { PostData } from '../post'
+import { PostData } from '../shared/interface/post';
 
 declare global {
   interface Window {

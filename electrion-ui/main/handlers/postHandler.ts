@@ -1,4 +1,4 @@
-import { PostData } from '../../post';
+import { PostData } from '../../shared/interface/post';
 import { PostService } from '../services/PostService';
 
 export async function savePost(data: PostData) {

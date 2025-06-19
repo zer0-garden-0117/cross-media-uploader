@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { PostData } from '../post';
+import { PostData } from '../shared/interface/post';
 
 contextBridge.exposeInMainWorld('electronAPI', {
   executeShellScript: (scriptPath: string, args?: string[]) => ipcRenderer.invoke('execute-shell-script', scriptPath, args),
