@@ -1,12 +1,14 @@
 import { app } from 'electron'
 import { registerHandlers } from './handlers';
 import { WindowService } from './services/WindowService';
-import { PostScheduler } from './services/SchedulerService';
+import { SchedulerService } from './services/SchedulerService';
 
-// Create an instance of WindowService and create the main window
+// Set up application services and launch main window
 (async () => {
   await app.whenReady();
-  const scheduler = new PostScheduler();
+  registerHandlers();
+  const schedulerService = new SchedulerService();
+  schedulerService.startSchedulerPost();
   const windowService = new WindowService();
   await windowService.createMainWindow();
 })();
@@ -15,6 +17,3 @@ import { PostScheduler } from './services/SchedulerService';
 app.on('window-all-closed', () => {
   app.quit();
 });
-
-// Register handlers for IPC events
-registerHandlers();

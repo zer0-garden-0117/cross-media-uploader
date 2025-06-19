@@ -5,10 +5,10 @@ import { PostData } from '../../post';
 import { POSTS_DIR, IMAGES_DIR } from '../config';
 import { ShellService } from './ShellService';
 
-export class PostScheduler {
+export class SchedulerService {
   private timer: cron.ScheduledTask;
 
-  constructor() {
+  public startSchedulerPost() {
     this.initializeDirectories();
     this.timer = cron.schedule('* * * * *', this.checkPosts.bind(this));
   }
