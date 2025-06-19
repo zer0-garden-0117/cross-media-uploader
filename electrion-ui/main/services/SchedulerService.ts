@@ -62,8 +62,8 @@ private async checkPosts() {
         post.image,             // 画像パス
         post.comment,           // コメント
         'zer0',                 // 作者
-        'その他',               // キャラクター
-        'illustration',         // ジャンル
+        post.character,         // キャラクター
+        post.genre,             // ジャンル
         tagsString              // タグ
       ];
       await ShellService.executeScript(scriptPath, args);

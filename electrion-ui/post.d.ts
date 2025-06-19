@@ -6,5 +6,8 @@ export interface PostData {
   scheduledTime: string;
   comment: string;
   tags: string[];
+  character: string;
+  genre: string;
+  targets: string[];
   createdAt?: string;
 }

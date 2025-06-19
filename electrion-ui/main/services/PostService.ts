@@ -137,11 +137,14 @@ export class PostService {
   private createPostData(postId: string, data: PostData, imagePath: string): PostData {
     return {
       id: postId,
+      image: imagePath,
+      status: 'pending',
       scheduledTime: data.scheduledTime,
       comment: data.comment,
-      image: imagePath,
       tags: data.tags,
-      status: 'pending',
+      character: data.character,
+      genre: data.genre,
+      targets: data.targets,
       createdAt: new Date().toISOString()
     };
   }
