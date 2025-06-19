@@ -1,3 +1,21 @@
-scripts/.env
-scripts/asb_token.json
-scripts/x_token.json
+# dependencies
+node_modules
+
+# logs
+*.log
+
+# next.js
+.next
+next-env.d.ts
+
+# build
+/app
+dist
+
+# postDir
+scheduled-posts/*
+
+# env
+.env
+asb_token.json
+x_token.json
