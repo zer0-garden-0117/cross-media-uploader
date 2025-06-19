@@ -46,6 +46,7 @@ export class ShellService {
     // 引数を適切にエスケープしてコマンドラインに渡す
     const escapedArgs = args.map(arg => `"${arg.replace(/"/g, '\\"')}"`).join(' ');
     const command = `${absolutePath} ${escapedArgs}`;
+    console.log('[Executing Shell Command]', command);
 
     return new Promise((resolve, reject) => {
       exec(command, (error, stdout, stderr) => {
