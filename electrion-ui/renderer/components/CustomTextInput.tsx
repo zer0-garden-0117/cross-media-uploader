@@ -10,7 +10,6 @@ export function CustomTextInput({ value, onChange }: CustomTextInputProps) {
     <TextInput
       value={value}
       onChange={(event) => onChange(event.currentTarget.value)}
-      description="Input description"
       placeholder="Comment"
     />
   );
