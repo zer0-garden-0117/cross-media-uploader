@@ -3,6 +3,7 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { POSTS_DIR, IMAGES_DIR } from '../config';
 import { PostData } from '../../shared/interface/post';
+import { StatusType } from '../../shared/types/status';
 
 export class PostService {
   constructor() {
@@ -97,7 +98,7 @@ export class PostService {
         const data = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
         return JSON.parse(data) as PostData;
       })
-      .filter(post => post.status === 'pending');
+      .filter(post => post.status === StatusType.PENDING);
   }
 
  public async getPostData(postId: string): Promise<{ data: PostData; imageBuffer: ArrayBuffer }> {
@@ -138,7 +139,7 @@ export class PostService {
     return {
       id: postId,
       image: imagePath,
-      status: 'pending',
+      status: StatusType.PENDING,
       scheduledTime: data.scheduledTime,
       comment: data.comment,
       tags: data.tags,
