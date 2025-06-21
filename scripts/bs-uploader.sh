@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # -------------------------------------------------------------------
-# Bluesky投稿スクリプト（画像投稿対応版）
+# Bluesky投稿スクリプト（画像圧縮・リサイズ対応版）
 # 使用方法: ./bluesky_post.sh "投稿メッセージ" [画像パス]
 # -------------------------------------------------------------------
 
@@ -29,6 +29,8 @@ fi
 # 画像パスチェック
 IMAGE_PATH="$2"
 HAS_IMAGE=0
+MAX_IMAGE_SIZE=976560 # Blueskyの最大画像サイズ (976.56KB in bytes)
+TEMP_IMAGE="/tmp/bluesky_temp_image.jpg"
 
 if [ -n "$IMAGE_PATH" ]; then
     if [ -f "$IMAGE_PATH" ]; then
@@ -39,6 +41,26 @@ if [ -n "$IMAGE_PATH" ]; then
         if [[ ! "$IMAGE_MIME" =~ ^image/(jpeg|png|gif|webp)$ ]]; then
             echo "エラー: 対応していない画像形式です (JPEG, PNG, GIF, WebPのみ対応)"
             exit 1
+        fi
+        
+        # 画像サイズをチェック
+        IMAGE_SIZE=$(stat -f%z "$IMAGE_PATH")
+        if [ $IMAGE_SIZE -gt $MAX_IMAGE_SIZE ]; then
+            echo "画像サイズが大きすぎます ($((IMAGE_SIZE/1024))KB)。圧縮・リサイズを試みます..."
+            
+            # ImageMagickで圧縮・リサイズ
+            if command -v convert >/dev/null 2>&1; then
+                convert "$IMAGE_PATH" -resize 1000x1000\> -quality 85 "$TEMP_IMAGE"
+                if [ $? -eq 0 ]; then
+                    IMAGE_PATH="$TEMP_IMAGE"
+                    IMAGE_MIME="image/jpeg"
+                    echo "画像をリサイズしました。新しいサイズ: $(( $(stat -f%z "$IMAGE_PATH")/1024 ))KB"
+                else
+                    echo "警告: 画像のリサイズに失敗しました。元の画像を使用します"
+                fi
+            else
+                echo "警告: ImageMagickがインストールされていません。画像を圧縮できません"
+            fi
         fi
         
         # 画像の幅と高さを取得
@@ -106,7 +128,7 @@ POST_DATA='{
         "$type": "app.bsky.feed.post"
 '
 
-# 画像がある場合は投稿データに追加（アスペクト比を含める）
+# 画像がある場合は投稿データに追加
 if [ $HAS_IMAGE -eq 1 ]; then
     POST_DATA+=',"embed": {
         "$type": "app.bsky.embed.images",
@@ -138,8 +160,12 @@ POST_RESPONSE=$(curl -s -X POST \
 if echo "$POST_RESPONSE" | jq -e '.error' > /dev/null; then
     echo "投稿失敗:"
     echo "$POST_RESPONSE" | jq
+    # 一時ファイルを削除
+    [ -f "$TEMP_IMAGE" ] && rm "$TEMP_IMAGE"
     exit 1
 else
     echo "投稿成功:"
     echo "$POST_RESPONSE" | jq -r '.uri'
+    # 一時ファイルを削除
+    [ -f "$TEMP_IMAGE" ] && rm "$TEMP_IMAGE"
 fi
